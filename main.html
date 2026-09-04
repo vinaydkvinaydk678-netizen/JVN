@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Teachers' Day - School Mentors Tribute</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Kannada:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- PEACEFUL EARTH & SAGE PALETTE --- */
+        :root {
+            --bg-color: #EAE7DC;       /* Soft Warm Beige */
+            --card-color: #D8C3A5;     /* Muted Warm Sand */
+            --accent-color: #6B7A6E;   /* Peaceful Sage Green */
+            --accent-secondary: #8E8D8A;/* Muted Neutral */
+            --text-main: #2B2D2F;      /* Soft Charcoal */
+            --text-sub: #5A5C5E;       /* Muted Grey-Brown */
+            --shadow: 0 8px 24px rgba(43, 45, 47, 0.08);
+            --radius: 24px;
+        }
+
+        /* DARK MODE */
+        body.dark-mode {
+            --bg-color: #1A1C1E;
+            --card-color: #2D3033;
+            --accent-color: #88A090;
+            --text-main: #E2E4E6;
+            --text-sub: #A0A4A8;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans Kannada', 'Inter', -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* DARK MODE TOGGLE */
+        .theme-toggle {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 1000;
+            background: var(--card-color);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        /* MAIN MOBILE FRAME */
+        .app-container {
+            width: 100%;
+            height: 100%;
+            max-width: 430px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* SCREEN CARDS */
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(12px);
+            transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s ease;
+        }
+
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* CARD DESIGN */
+        .card {
+            background: var(--card-color);
+            padding: 36px 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.5s ease;
+        }
+
+        /* SUBTLE ARTIST DECORATIONS ACROSS CARDS */
+        .art-sketch {
+            position: absolute;
+            opacity: 0.10;
+            pointer-events: none;
+            stroke: var(--text-main);
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .art-bottom-right {
+            bottom: -5px;
+            right: -5px;
+            width: 65px;
+            height: 65px;
+        }
+
+        .art-top-left {
+            top: 10px;
+            left: 10px;
+            width: 45px;
+            height: 45px;
+        }
+
+        /* TYPOGRAPHY */
+        h1 {
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.4;
+            letter-spacing: -0.01em;
+        }
+
+        p {
+            font-size: 0.98rem;
+            color: var(--text-sub);
+            line-height: 1.6;
+        }
+
+        .subtext {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            letter-spacing: 0.03em;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .kannada-text {
+            font-size: 1.02rem;
+            line-height: 1.7;
+            color: var(--text-main);
+            text-align: left;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 16px;
+            border-radius: 12px;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        /* CANVAS FOR PAINTBRUSH DRAWING */
+        #paintCanvas {
+            margin: 10px 0;
+            max-width: 100%;
+            height: 80px;
+        }
+
+        /* BUTTONS */
+        .btn {
+            background-color: var(--accent-color);
+            color: #FFFFFF;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-top: 8px;
+            box-shadow: 0 4px 12px rgba(107, 122, 110, 0.25);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        /* TERMINAL SCREEN */
+        .screen-terminal {
+            background-color: #14181B;
+            color: #72A0C1;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terminal-box {
+            width: 100%;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 0 10px;
+        }
+
+        .terminal-line {
+            color: #8FBC8F;
+            margin-bottom: 8px;
+            font-size: 0.88rem;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terminal-line.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* PROGRESS BAR */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: #23282D;
+            border-radius: 8px;
+            margin-top: 16px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #8FBC8F;
+            transition: width 3s linear;
+        }
+
+        /* FOOTER */
+        .footer-text {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            line-height: 1.5;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .fade-element {
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .fade-element.visible {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="theme-toggle" id="themeToggle">🌙 Mode</button>
+
+    <div class="app-container">
+
+        <div class="screen active" id="screen1">
+            <div class="card">
+                <svg class="art-sketch art-top-left" viewBox="0 0 50 50">
+                    <circle cx="25" cy="25" r="4" stroke-width="1.5"/>
+                    <path d="M25 10 C20 18 20 22 25 21 Z" stroke-width="1.2"/>
+                    <path d="M25 40 C20 32 20 28 25 29 Z" stroke-width="1.2"/>
+                </svg>
+
+                <h1>Happy Teachers' Day 🎓</h1>
+                <p>ನನ್ನ ಶಾಲೆಯ ದಿನಗಳಲ್ಲಿ ದಾರಿ ತೋರಿಸಿ, ಪ್ರೇರೇಪಿಸಿ, ಜೀವನ ರೂಪಿಸಿದ ನನ್ನ ನೆಚ್ಚಿನ ಶಾಲಾ ಶಿಕ್ಷಕರಿಗೆ... 😊</p>
+                <button class="btn" onclick="nextScreen(2)">Begin Journey →</button>
+                
+                <svg class="art-sketch art-bottom-right" viewBox="0 0 100 100">
+                    <path d="M10,80 Q50,10 90,80" stroke-width="5"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="screen" id="screen2">
+            <div class="card">
+                <svg class="art-sketch art-bottom-right" viewBox="0 0 100 100">
+                    <path d="M15,90 C30,40 70,60 85,10" stroke-width="2"/>
+                </svg>
+
+                <h1>ನಾವು ಇಡುವ ಪ್ರತಿಯೊಂದು ಹೆಜ್ಜೆ...</h1>
+                <p id="screen2-sub" class="fade-element">...ನಮ್ಮ ಶಾಲಾ ಶಿಕ್ಷಕರು ಹಾಕಿಕೊಟ್ಟ ಬಲವಾದ ಅಡಿಪಾಯದ ಮೇಲೆಯೇ ನಿಂತಿದೆ.</p>
+                <button id="screen2-btn" class="btn fade-element" onclick="nextScreen(3)">True Indeed 🙂</button>
+            </div>
+        </div>
+
+        <div class="screen" id="screen3">
+            <div class="card">
+                <svg class="art-sketch art-top-left" viewBox="0 0 60 60">
+                    <path d="M10,30 C10,15 45,10 50,25 C55,40 35,50 20,45 Z" stroke-width="1.5"/>
+                </svg>
+
+                <h1>ಜೀವ ತುಂಬುವ ಶಿಲ್ಪಿಗಳು 🗿✨</h1>
+                <p id="screen3-sub" class="fade-element">ಒಂದು ಕಟು ಕಲ್ಲನ್ನು ಸುಂದರವಾದ ಮೂರ್ತಿಯಾಗಿ ಕೆತ್ತಿದ ನನ್ನ ಶಾಲೆಯ ಶಿಕ್ಷಕರು.</p>
+                <button id="screen3-btn" class="btn fade-element" onclick="runTerminal()">Refining Memories... 😄</button>
+            </div>
+        </div>
+
+        <div class="screen screen-terminal" id="screen4">
+            <div class="terminal-box">
+                <div class="terminal-line" id="term1">> Fetching School Classroom Memories...</div>
+                <div class="terminal-line" id="term2">> Loading Lessons & Values...</div>
+                <div class="terminal-line" id="term3" style="color: #72A0C1;">> Found: School Teachers Guidance</div>
+                <div class="terminal-line" id="term4">> Processing Gratitude Data...</div>
+                <div class="terminal-line" id="term5" style="color: #72A0C1;">> Status: Lifelong Impact 🌟</div>
+                <div class="terminal-line" id="term6">> Compiling Tribute...</div>
+                <div class="terminal-line" id="term7">> Message Generation Complete.</div>
+                <div class="terminal-line" id="term8" style="color: #58A6FF; font-weight: bold;">> Access Granted.</div>
+                
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screen" id="screen5">
+            <div class="card">
+                <svg class="art-sketch art-bottom-right" viewBox="0 0 60 60">
+                    <path d="M10 50 L25 10 L40 50 L10 25 L50 25 Z" stroke-width="1.2"/>
+                </svg>
+
+                <div style="font-size: 2.8rem;">🎉</div>
+                <p class="subtext">MILESTONE UNLOCKED</p>
+                <h1>✓ ಇಂದು ನಾವು ಎತ್ತರಕ್ಕೆ ಬೆಳೆದಿದ್ದೇವೆ</h1>
+                <button class="btn" onclick="nextScreen(6)">Read Message →</button>
+            </div>
+        </div>
+
+        <div class="screen" id="screen6">
+            <div class="card">
+                <svg class="art-sketch art-top-left" viewBox="0 0 50 50">
+                    <path d="M25 5 C15 20 35 30 25 45" stroke-width="1.5"/>
+                </svg>
+
+                <p class="subtext">HEARTFELT GRATITUDE</p>
+                <div class="kannada-text">
+                    📖 <b>ನನ್ನ ಪ್ರೀತಿಯ ಶಾಲಾ ಶಿಕ್ಷಕರಿಗೆ...</b><br><br>
+                    ನಾನು ಶಾಲೆಯಲ್ಲಿದ್ದಾಗ ನೀವು ನನಗೆ ನೀಡಿದ ಪಾಠ ಮತ್ತು ಮಾರ್ಗದರ್ಶನವೇ ಇಂದು ನಾನು ಈ ಎತ್ತರದಲ್ಲಿ ನಿಲ್ಲಲು ಮುಖ್ಯ ಕಾರಣ.<br><br>
+                    ನೀವು ಕಲಿಸಿದ ಮೌಲ್ಯಗಳನ್ನು ಮತ್ತು ಪಾಠಗಳನ್ನು ನಾನು ಎಂದಿಗೂ ಮರೆಯುವುದಿಲ್ಲ ಮತ್ತು ದ್ರೋಹ ಎಸಗುವುದಿಲ್ಲ.
+                </div>
+                <button class="btn" onclick="triggerTypingScreen()">Unlock Main Tribute ✨</button>
+            </div>
+        </div>
+
+        <div class="screen" id="screen7">
+            <div class="card">
+                <svg class="art-sketch art-bottom-right" viewBox="0 0 100 100">
+                    <path d="M20,50 C40,10 60,90 80,50" stroke-width="2"/>
+                </svg>
+
+                <p class="subtext">DEDICATED TO OUR SCHOOL TEACHERS</p>
+                
+                <canvas id="paintCanvas" width="320" height="80"></canvas>
+                
+                <button id="screen7-btn" class="btn fade-element" onclick="startInstallation()">Continue 😊</button>
+            </div>
+        </div>
+
+        <div class="screen" id="screen8">
+            <div class="card">
+                <p class="subtext">SYSTEM ACTION</p>
+                <h1 id="installStatus">Encoding gratitude...</h1>
+                <div class="progress-container" id="installProgressBox" style="display: block; width: 100%;">
+                    <div class="progress-bar" id="installProgressBar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="screen" id="screen9">
+            <div class="card">
+                <h1>Operation Completed ✨</h1>
+                <p>Gratitude Delivered Successfully.</p>
+                <p class="subtext">Reason: Infinite respect detected.</p>
+                <hr style="width: 30%; border: none; border-top: 1px solid var(--text-sub); opacity: 0.25; margin: 4px 0;">
+                <p style="color: var(--accent-color); font-weight: 600;">Values Permanently Installed. 🌸</p>
+                <button class="btn" onclick="nextScreen(10)">Final Wish →</button>
+            </div>
+        </div>
+
+        <div class="screen" id="screen10">
+            <div class="card" style="max-height: 85vh; overflow-y: auto;">
+                <svg class="art-sketch art-top-left" viewBox="0 0 50 50">
+                    <circle cx="25" cy="25" r="3" stroke-width="1"/>
+                </svg>
+
+                <p>ನಮ್ಮ ಶಾಲೆಯ ದಿನಗಳಲ್ಲಿ ನಮ್ಮಲ್ಲಿದ್ದ ಸಾಮರ್ಥ್ಯವನ್ನು ಗುರುತಿಸಿ ಬೆಳೆಸಿದ ಗುರುಗಳಿಗೆ...</p>
+                <hr style="width: 30%; border: none; border-top: 1px solid var(--text-sub); opacity: 0.25; margin: 4px 0;">
+                
+                <p class="kannada-text" style="border-left-color: #E5A93C;">
+                    ಒಂದು ಕಠಿಣ ಕಲ್ಲಿಗೆ ಜೀವ ತುಂಬಿ, ಸುಂದರವಾದ ಶಿಲ್ಪವಾಗಿ ಕೆತ್ತಿದ ನನ್ನ ಎಲ್ಲಾ ಶಾಲಾ ಗುರುಗಳಿಗೆ <b>ಶಿಕ್ಷಕರ ದಿನಾಚರಣೆಯ ಹಾರ್ದಿಕ ಶುಭಾಶಯಗಳು!</b> 🎓🌸
+                </p>
+                
+                <hr style="width: 30%; border: none; border-top: 1px solid var(--text-sub); opacity: 0.25; margin: 4px 0;">
+                <p>ಇಂದು ನಾವು ಈ ಹಂತದಲ್ಲಿ ಇರಲು ಕಾರಣಕರ್ತರಾದ ತಮಗೆ ಧನ್ಯವಾದಗಳು.<br></p>
+                
+                <div class="footer-text">
+                    Built by <strong>Vinu</strong> with HTML, CSS, and deep gratitude.<br>
+                    <span style="color: var(--accent-color); font-weight: 600;">Status: Forever Grateful 🌸</span><br>
+                    <span class="fade-element" id="finalCareText" style="font-size: 0.75rem; opacity: 0.7;">Happy Teachers' Day! 😊</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // NAVIGATION ENGINE
+        function nextScreen(screenNumber) {
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(s => s.classList.remove('active'));
+            
+            const next = document.getElementById(`screen${screenNumber}`);
+            if (next) {
+                next.classList.add('active');
+                handleScreenTriggers(screenNumber);
+            }
+        }
+
+        // TIMED FADE-INS
+        function handleScreenTriggers(screenNumber) {
+            if (screenNumber === 2) {
+                setTimeout(() => document.getElementById('screen2-sub').classList.add('visible'), 1000);
+                setTimeout(() => document.getElementById('screen2-btn').classList.add('visible'), 1800);
+            }
+            if (screenNumber === 3) {
+                setTimeout(() => document.getElementById('screen3-sub').classList.add('visible'), 1000);
+                setTimeout(() => document.getElementById('screen3-btn').classList.add('visible'), 1800);
+            }
+            if (screenNumber === 10) {
+                setTimeout(() => document.getElementById('finalCareText').classList.add('visible'), 2000);
+            }
+        }
+
+        // TERMINAL FLOW
+        function runTerminal() {
+            nextScreen(4);
+            const lineIds = ['term1', 'term2', 'term3', 'term4', 'term5', 'term6', 'term7', 'term8'];
+            
+            lineIds.forEach((id, index) => {
+                setTimeout(() => {
+                    document.getElementById(id).classList.add('show');
+                }, (index + 1) * 500);
+            });
+
+            setTimeout(() => {
+                const progressBox = document.getElementById('progressContainer');
+                const progressBar = document.getElementById('progressBar');
+                progressBox.style.display = 'block';
+                setTimeout(() => progressBar.style.width = '100%', 100);
+            }, 4300);
+
+            // Transition after bar fills
+            setTimeout(() => {
+                nextScreen(5);
+            }, 7500);
+        }
+
+        // CANVAS PAINT BRUSH DRAWING ANIMATION
+        function triggerTypingScreen() {
+            nextScreen(7);
+            const btn = document.getElementById('screen7-btn');
+            btn.classList.remove('visible');
+
+            const canvas = document.getElementById('paintCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const textToDraw = " Happy Teachers' Day 🎓";
+            let currentLength = 0;
+
+            function drawBrushTextStep() {
+                if (currentLength <= textToDraw.length) {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    const subStr = textToDraw.substring(0, currentLength);
+
+                    // 1. Sage Accent Under-stroke (Paint Layer 1)
+                    ctx.font = "bold 26px 'Caveat', cursive, sans-serif";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+                    ctx.fillStyle = "#E5A93C";
+                    ctx.shadowColor = "rgba(229, 169, 60, 0.4)";
+                    ctx.shadowBlur = 8;
+                    ctx.fillText(subStr, canvas.width / 2 + 1, canvas.height / 2 + 1);
+
+                    // 2. Main Soft Charcoal Text (Paint Layer 2)
+                    ctx.fillStyle = "#6B7A6E";
+                    ctx.shadowColor = "rgba(107, 122, 110, 0.3)";
+                    ctx.shadowBlur = 4;
+                    ctx.fillText(subStr, canvas.width / 2, canvas.height / 2);
+
+                    // 3. Underline Brush Stroke Effect
+                    if (currentLength > 4) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = "#E5A93C";
+                        ctx.lineWidth = 3;
+                        ctx.lineCap = "round";
+                        ctx.moveTo(canvas.width / 2 - 90, canvas.height / 2 + 18);
+                        ctx.quadraticCurveTo(canvas.width / 2, canvas.height / 2 + 22, canvas.width / 2 + (currentLength * 4), canvas.height / 2 + 18);
+                        ctx.stroke();
+                    }
+
+                    // Haptic feedback
+                    if (navigator.vibrate) {
+                        navigator.vibrate(20);
+                    }
+
+                    currentLength++;
+                    setTimeout(drawBrushTextStep, 150);
+                } else {
+                    setTimeout(() => btn.classList.add('visible'), 400);
+                }
+            }
+
+            setTimeout(drawBrushTextStep, 400);
+        }
+
+        // AUTOMATIC INSTALLATION FLOW
+        function startInstallation() {
+            nextScreen(8);
+            const bar = document.getElementById('installProgressBar');
+            const status = document.getElementById('installStatus');
+            
+            setTimeout(() => {
+                bar.style.width = '100%';
+            }, 100);
+
+            setTimeout(() => {
+                status.innerHTML = "Complete. ✨";
+            }, 3000);
+
+            setTimeout(() => {
+                nextScreen(9);
+            }, 3800);
+        }
+
+        // DARK MODE TOGGLE & LOCAL STORAGE
+        const themeToggleBtn = document.getElementById('themeToggle');
+        
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+    </script>
+</body>
+</html>
